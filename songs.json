@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "file": "videos/song_01.mp4",
+    "title": "Ex’s Hate Me",
+    "artist": "B Ray"
+  },
+  {
+    "id": 2,
+    "file": "videos/song_02.mp4",
+    "title": "Sớm Muộn Thì",
+    "artist": ""
+  },
+  {
+    "id": 3,
+    "file": "videos/song_03.mp4",
+    "title": "KHỞI",
+    "artist": ""
+  },
+  {
+    "id": 4,
+    "file": "videos/song_04.mp4",
+    "title": "Chia Tay Trong Mưa",
+    "artist": "Phương Thanh"
+  },
+  {
+    "id": 5,
+    "file": "videos/song_05.mp4",
+    "title": "Đường tôi chở em về",
+    "artist": "buitruonglinh"
+  },
+  {
+    "id": 6,
+    "file": "videos/song_06.mp4",
+    "title": "Tình Ka",
+    "artist": ""
+  },
+  {
+    "id": 7,
+    "file": "videos/song_07.mp4",
+    "title": "An Thần",
+    "artist": ""
+  },
+  {
+    "id": 8,
+    "file": "videos/song_08.mp4",
+    "title": "In Love",
+    "artist": ""
+  },
+  {
+    "id": 9,
+    "file": "videos/song_09.mp4",
+    "title": "Tán Gái 505",
+    "artist": ""
+  }
+]

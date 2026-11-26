@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="GUESS THE SONG – Mini-game đoán tên bài hát trực tuyến." />
+  <title>GUESS THE SONG – ĐOÁN TÊN BÀI HÁT</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <!-- HEADER -->
+    <header class="header">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">🎵</div>
+        <div class="brand-text">
+          <h1>GUESS THE SONG – ĐOÁN TÊN BÀI HÁT</h1>
+          <div class="subtitle">Listen. Guess. Reveal. Enjoy.</div>
+        </div>
+      </div>
+
+      <div class="header-meta">
+        <div class="song-counter" id="songCounter">SONG 01 / 09</div>
+        <button class="icon-btn" id="toggleSettingsBtn" type="button" title="Cài đặt trò chơi">
+          ⚙️ Cài đặt
+        </button>
+      </div>
+    </header>
+
+    <!-- SETTINGS PANEL -->
+    <section class="settings-panel" id="settingsPanel" aria-label="Cài đặt trò chơi">
+      <div class="settings-grid">
+        <div class="setting-box">
+          <span class="setting-label">⏱ Thời gian nghe ban đầu</span>
+          <div class="segmented-group" id="durationSelector">
+            <button class="seg-btn" type="button" data-sec="10">10 giây</button>
+            <button class="seg-btn active" type="button" data-sec="12">12 giây</button>
+            <button class="seg-btn" type="button" data-sec="15">15 giây</button>
+          </div>
+        </div>
+
+        <div class="setting-box">
+          <span class="setting-label">🎬 Chế độ hiển thị</span>
+          <div class="segmented-group" id="modeSelector">
+            <button class="seg-btn active" type="button" data-mode="video">Video + Nhạc</button>
+            <button class="seg-btn" type="button" data-mode="audio">Chỉ nghe nhạc</button>
+          </div>
+        </div>
+
+        <div class="setting-box">
+          <span class="setting-label">🔀 Thứ tự bài hát</span>
+          <div class="segmented-group" id="orderSelector">
+            <button class="seg-btn active" type="button" data-order="original">Thứ tự gốc</button>
+            <button class="seg-btn" type="button" data-order="shuffle">Xáo trộn</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-actions">
+        <div class="completed-pill" id="completedStats">Đã hoàn thành: 0 / 9 bài</div>
+
+        <div class="action-cluster">
+          <button class="icon-btn" id="openEditorBtn" type="button">
+            ✏️ Sửa tên bài hát
+          </button>
+
+          <button class="icon-btn" id="restartQuickBtn" type="button">
+            🔄 Chơi lại từ đầu
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN GAMEPLAY CARD -->
+    <main class="game-card" id="gameCard">
+      <!-- STATUS & SNIPPET TARGET -->
+      <div class="status-row">
+        <div class="status-badge status-READY" id="statusBadge">
+          <span class="status-dot"></span>
+          <span id="statusText">READY – Sẵn sàng</span>
+        </div>
+
+        <div class="snippet-timer-pill" id="snippetInfo">
+          Đoạn nghe đoán: <strong id="snippetTargetLabel">12s</strong> đầu tiên
+        </div>
+      </div>
+
+      <!-- VIDEO / AUDIO VISUALIZER STAGE -->
+      <div class="media-stage" id="mediaStage">
+        <video id="videoPlayer" playsinline webkit-playsinline preload="metadata"></video>
+
+        <div class="audio-visualizer" id="audioVisualizer">
+          <div class="vinyl-disc" id="vinylDisc" aria-hidden="true">🎧</div>
+          <div class="eq-bars" id="eqBars" aria-hidden="true">
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+          </div>
+          <div class="audio-mode-caption">
+            Chế độ chỉ nghe âm thanh đang bật
+          </div>
+        </div>
+
+        <div class="stage-banner" id="stageBanner">
+          HẾT THỜI GIAN NGHE – BẠN ĐOÁN ĐƯỢC CHƯA?
+        </div>
+
+        <div class="media-error-overlay" id="mediaErrorOverlay">
+          <h3>⚠️ Không thể tải hoặc phát video bài hát này</h3>
+          <p id="mediaErrorDesc">
+            Vui lòng kiểm tra kết nối mạng hoặc đảm bảo thư mục <strong>videos/</strong> đã được tải đầy đủ lên GitHub Pages.
+          </p>
+          <div class="error-actions">
+            <button class="icon-btn" id="retryLoadBtn" type="button">🔄 Thử tải lại</button>
+            <button class="icon-btn" id="skipBrokenBtn" type="button">⏭ Bỏ qua bài này</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROGRESS BAR -->
+      <div class="progress-section">
+        <div class="time-row">
+          <span class="current-time" id="currentTimeLabel">00:00</span>
+          <span id="durationLabel">00:00</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-snippet-zone" id="snippetZone" style="width: 40%;"></div>
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <!-- ANSWER REVEAL AREA -->
+      <div class="answer-box" id="answerBox">
+        <div class="answer-placeholder" id="answerPlaceholder">
+          🔒 Tên bài hát đang được ẩn — Hãy lắng nghe và đoán trước khi mở đáp án!
+        </div>
+        <div id="answerContent" style="display:none;">
+          <div class="answer-label">✨ ĐÁP ÁN CHÍNH XÁC</div>
+          <div class="answer-title" id="answerTitle">Tên bài hát</div>
+          <div class="answer-artist" id="answerArtist"></div>
+        </div>
+      </div>
+
+      <!-- CONTROLS -->
+      <div class="controls-grid">
+        <button class="ctrl-btn btn-start" id="btnStart" type="button">
+          ▶ BẮT ĐẦU
+        </button>
+        <button class="ctrl-btn btn-reveal" id="btnReveal" type="button" disabled>
+          👀 HIỆN ĐÁP ÁN
+        </button>
+        <button class="ctrl-btn btn-continue" id="btnContinue" type="button" disabled>
+          ▶ NGHE TIẾP
+        </button>
+        <button class="ctrl-btn btn-next" id="btnNext" type="button" disabled>
+          ⏭ BÀI TIẾP THEO
+        </button>
+      </div>
+    </main>
+
+    <!-- FINAL COMPLETION SCREEN -->
+    <section class="completion-card" id="completionCard">
+      <div class="trophy-icon" aria-hidden="true">🏆</div>
+      <h2>BẠN ĐÃ HOÀN THÀNH TẤT CẢ CÁC BÀI HÁT!</h2>
+      <p id="completionSummary">
+        Chúc mừng bạn đã hoàn thành trọn vẹn thử thách đoán tên các bài hát. Bạn có thể chơi lại từ đầu hoặc xáo trộn thứ tự để thử sức lần nữa!
+      </p>
+      <div class="completion-actions">
+        <button class="ctrl-btn btn-start" id="btnReplayOriginal" type="button">
+          🔄 CHƠI LẠI TỪ ĐẦU
+        </button>
+        <button class="ctrl-btn btn-reveal" id="btnReplayShuffle" type="button">
+          🔀 XÁO TRỘN &amp; CHƠI LẠI
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <!-- TRACKLIST / ANSWER EDITOR MODAL -->
+  <div class="modal-backdrop" id="editorModal" role="dialog" aria-modal="true" aria-labelledby="editorModalTitle">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="editorModalTitle">✏️ Chỉnh sửa đáp án tên bài hát</h3>
+        <button class="icon-btn" id="closeEditorBtn" type="button">✕ Đóng</button>
+      </div>
+      <div class="modal-body" id="editorList">
+        <div class="modal-note">
+          💡 <strong>Mẹo cập nhật cho mọi người trên GitHub Pages:</strong> Sau khi nhập tên bài hát và ca sĩ bên dưới, bấm <strong>"💾 Tải file songs.json"</strong> rồi tải file đó lên thay thế file <code>songs.json</code> trong repository GitHub của bạn. Bấm <strong>"✓ Lưu trên máy này"</strong> nếu chỉ muốn lưu tạm trên trình duyệt hiện tại.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="icon-btn" id="exportJsonBtn" type="button" title="Tải file songs.json để cập nhật lên GitHub Pages">
+          💾 Tải file songs.json
+        </button>
+        <div class="modal-footer-right">
+          <button class="icon-btn" id="resetTitlesBtn" type="button">Khôi phục theo songs.json</button>
+          <button class="ctrl-btn btn-start btn-save-modal" id="saveTitlesBtn" type="button">
+            ✓ Lưu trên máy này
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
